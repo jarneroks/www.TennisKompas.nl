@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<!-- 8x SW19. 20 slams. some things just look right in whites. -->
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tenniskompas — Rackets, snaren &amp; alles daartussen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B1B18;
+    --ink-dim:#5C594F;
+    --paper:#F6F2E8;
+    --paper-2:#ECE5D3;
+    --line: rgba(27,27,24,0.13);
+    --line-strong: rgba(27,27,24,0.26);
+    --accent:#2F4A38;
+    --accent-bright:#3E6349;
+    --sw-purple:#4B0C51;
+    --sw-green:#00693E;
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Oswald', sans-serif;
+    --body: 'Source Serif 4', serif;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--paper); color:var(--ink); font-family:var(--body); line-height:1.5; -webkit-font-smoothing:antialiased; }
+  a{color:inherit;}
+  img,svg{display:block;max-width:100%;}
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
+
+  /* NAV */
+  header.site{ position:sticky; top:0; z-index:60; background:rgba(246,242,232,0.92); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; gap:14px; padding:18px 0; }
+  .menu-btn{
+    width:38px; height:38px; border:1px solid var(--line-strong); border-radius:3px; background:transparent;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; cursor:pointer; flex-shrink:0;
+  }
+  .menu-btn span{ width:16px; height:1.5px; background:var(--ink); display:block; transition:transform .2s, opacity .2s; }
+  .menu-btn.open span:nth-child(1){ transform:translateY(5.5px) rotate(45deg); }
+  .menu-btn.open span:nth-child(2){ opacity:0; }
+  .menu-btn.open span:nth-child(3){ transform:translateY(-5.5px) rotate(-45deg); }
+  .logo{ display:flex; align-items:center; gap:9px; font-family:var(--display); font-weight:600; letter-spacing:0.02em; font-size:19px; text-decoration:none; color:var(--ink); }
+  .logo .mark{ display:flex; gap:3px; }
+  .logo .mark span{ width:6px; height:6px; border-radius:50%; display:block; }
+  .logo .mark span:first-child{ background:var(--sw-purple); }
+  .logo .mark span:last-child{ background:var(--sw-green); }
+
+  .menu-panel{
+    position:absolute; top:100%; left:0; width:100%; background:var(--paper);
+    border-bottom:1px solid var(--line-strong); box-shadow:0 12px 24px rgba(27,27,24,0.08);
+    max-height:0; overflow:hidden; transition:max-height .25s ease;
+  }
+  .menu-panel.open{ max-height:340px; }
+  .menu-panel-inner{ padding:8px 0 28px; display:grid; grid-template-columns:repeat(2,1fr); gap:4px 32px; }
+  @media (max-width:640px){ .menu-panel-inner{grid-template-columns:1fr;} }
+  .menu-panel a{
+    display:flex; align-items:baseline; gap:12px; padding:14px 0; text-decoration:none; color:var(--ink);
+    border-bottom:1px solid var(--line); font-family:var(--display); font-size:17px; font-weight:500;
+  }
+  .menu-panel a .mn{ font-family:var(--mono); font-size:11px; color:var(--ink-dim); }
+  .menu-panel a:hover{ color:var(--accent); }
+  .menu-panel a.tool{ color:var(--accent); }
+  .menu-panel a.tool .mn{ color:var(--accent); }
+
+  /* HERO */
+  .hero{ padding:88px 0 100px; position:relative; overflow:hidden; }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:56px; align-items:center; }
+  @media (max-width:900px){ .hero-grid{grid-template-columns:1fr;} }
+  .eyebrow{ font-family:var(--mono); font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); display:flex; align-items:center; gap:10px; margin-bottom:22px; }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--ink-dim); }
+  .eyebrow .stamp{ font-family:var(--mono); font-size:10px; letter-spacing:0.08em; color:var(--paper); background:var(--sw-purple); padding:2px 6px; border-radius:2px; }
+  h1.hero-head{ font-family:var(--display); font-weight:600; letter-spacing:-0.01em; font-size:clamp(40px, 6vw, 68px); line-height:1.02; margin:0 0 24px; color:var(--ink); }
+  h1.hero-head em{ font-style:normal; color:var(--accent); }
+  .hero-sub{ font-size:19px; color:var(--ink-dim); max-width:44ch; margin:0 0 34px; }
+  .cta-row{ display:flex; gap:16px; flex-wrap:wrap; }
+  .btn{ font-family:var(--display); text-transform:uppercase; letter-spacing:0.05em; font-size:14px; padding:14px 26px; border-radius:2px; text-decoration:none; display:inline-block; transition:transform .15s ease, background .2s; border:none; cursor:pointer; }
+  .btn-primary{ background:var(--ink); color:var(--paper); font-weight:600; }
+  .btn-primary:hover{ transform:translateY(-2px); background:var(--accent); }
+  .btn-ghost{ border:1px solid var(--line-strong); color:var(--ink); background:transparent; }
+  .btn-ghost:hover{ border-color:var(--accent); color:var(--accent); }
+
+  .spec-card{ position:relative; background:var(--paper-2); border:1px solid var(--line-strong); border-radius:4px; padding:26px 26px 22px; }
+  .spec-card .weave{ width:100%; aspect-ratio:1/1; margin-bottom:18px; }
+  .spec-row{ display:flex; justify-content:space-between; align-items:baseline; font-family:var(--mono); font-size:13px; padding:8px 0; border-top:1px solid var(--line); }
+  .spec-row:first-of-type{ border-top:none; }
+  .spec-row .k{ color:var(--ink-dim); text-transform:uppercase; letter-spacing:0.08em; font-size:11px; }
+  .spec-row .v{ color:var(--accent); }
+  .spec-tag{ position:absolute; top:-11px; left:22px; display:flex; overflow:hidden; border-radius:2px; font-family:var(--mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; box-shadow:0 1px 2px rgba(0,0,0,0.15); }
+  .spec-tag span{ padding:4px 9px; color:var(--paper); }
+  .spec-tag span:first-child{ background:var(--sw-purple); }
+  .spec-tag span:last-child{ background:var(--sw-green); }
+  .grip-monogram{ position:absolute; bottom:18px; right:22px; font-family:var(--display); font-size:11px; font-weight:600; letter-spacing:0.14em; color:var(--ink); opacity:0.22; pointer-events:none; user-select:none; }
+
+  section{ padding:88px 0; border-top:1px solid var(--line); }
+  .section-head{ margin-bottom:48px; }
+  .section-num{ font-family:var(--mono); font-size:12px; color:var(--ink-dim); letter-spacing:0.1em; margin-bottom:12px; }
+  h2{ font-family:var(--display); font-weight:600; font-size:clamp(26px,3.2vw,36px); margin:0; letter-spacing:-0.005em; }
+
+  .guides{ display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  @media (max-width:980px){ .guides{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:600px){ .guides{grid-template-columns:1fr;} }
+  .guide{ background:var(--paper); padding:32px 26px; position:relative; transition:background .2s; text-decoration:none; color:inherit; display:block; }
+  .guide:hover{ background:var(--paper-2); }
+  .guide .gnum{ font-family:var(--mono); font-size:12px; color:var(--ink-dim); margin-bottom:18px; display:block; }
+  .guide h3{ font-family:var(--display); font-size:20px; font-weight:600; margin:0 0 10px; color:var(--ink); }
+  .guide p{ color:var(--ink-dim); font-size:14px; margin:0 0 18px; }
+  .guide .go{ font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.08em; color:var(--accent); text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+  .guide .go::after{ content:'→'; transition:transform .15s; }
+  .guide:hover .go::after{ transform:translateX(4px); }
+  .guide.tool{ background:var(--paper-2); }
+  .guide.tool .go{ color:var(--sw-green); }
+
+  .cta-band{ background:var(--ink); color:var(--paper); border-radius:4px; padding:52px 48px; display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap; position:relative; overflow:hidden; }
+  .cta-band::after{ content:''; position:absolute; right:-30px; top:-30px; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle, var(--sw-green) 0%, transparent 70%); opacity:0.18; }
+  .cta-band h3{ font-family:var(--display); font-size:26px; margin:0 0 6px; font-weight:600; }
+  .cta-band p{ margin:0; color:rgba(246,242,232,0.75); max-width:40ch; }
+  .cta-band .btn-primary{ background:var(--paper); color:var(--ink); }
+  .cta-band .btn-primary:hover{ background:var(--accent-bright); color:var(--paper); }
+
+  footer{ padding:56px 0 40px; border-top:1px solid var(--line); }
+  .foot-grid{ display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; align-items:center; }
+  .foot-links{ display:flex; gap:26px; flex-wrap:wrap; }
+  .foot-links a{ font-family:var(--mono); font-size:12px; color:var(--ink-dim); text-decoration:none; letter-spacing:0.04em; }
+  .foot-links a:hover{ color:var(--accent); }
+  .foot-note{ font-family:var(--mono); font-size:11px; color:var(--ink-dim); opacity:0.65; margin-top:28px; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap nav">
+    <button class="menu-btn" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <a href="index.html" class="logo"><svg class="tk-icon" viewBox="0 0 40 40" width="24" height="24" aria-hidden="true">
+  <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.3"/>
+  <line x1="20" y1="3" x2="20" y2="8" stroke="var(--sw-green)" stroke-width="1.8"/>
+  <line x1="20" y1="32" x2="20" y2="37" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+  <line x1="3" y1="20" x2="8" y2="20" stroke="var(--sw-purple)" stroke-width="1.8"/>
+  <line x1="32" y1="20" x2="37" y2="20" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+  <circle cx="20" cy="20" r="10" fill="var(--paper-2)" stroke="currentColor" stroke-width="1.1"/>
+  <path d="M11,14 Q20,20 11,26" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.55"/>
+  <path d="M29,14 Q20,20 29,26" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.55"/>
+  <text x="20" y="23.5" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7.5" font-weight="600" fill="var(--accent)" letter-spacing="0.3">TK</text>
+</svg><span class="sr-note" title="one-handed since forever" style="display:none;"></span> Home</a>
+  </div>
+  <div class="menu-panel" id="menuPanel">
+    <div class="wrap menu-panel-inner">
+      <a href="index.html"><span class="mn">00</span> Home</a>
+      <a href="racketwijzer.html" class="tool"><span class="mn">→</span> Racketwijzer</a>
+      <a href="rackets.html"><span class="mn">01</span> Rackets kiezen</a>
+      <a href="strings.html"><span class="mn">02</span> Snaren &amp; materiaal</a>
+      <a href="tension.html"><span class="mn">03</span> Snaarspanning</a>
+      <a href="snaarfinder.html" class="tool"><span class="mn">→</span> Snaarfinder</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" style="border-top:none; padding-top:80px;">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Uitleg zonder jargon-overkill <span class="stamp">Est. SW19</span></p>
+        <h1 class="hero-head">Snap je racket<br><em>voordat</em> je het koopt.</h1>
+        <p class="hero-sub">Snaarspanning, snaartype, racketgewicht, balanspunt — de specs die er écht toe doen, uitgelegd voor spelers die weten wat ze op de baan voelen maar niet weten waarom.</p>
+        <div class="cta-row">
+          <a href="racketwijzer.html" class="btn btn-primary">Doe de racketwijzer</a>
+          <a href="rackets.html" class="btn btn-ghost">Begin bij rackets</a>
+        </div>
+      </div>
+
+      <div class="spec-card">
+        <span class="spec-tag"><span>Centre</span><span>Court</span></span>
+        <svg class="weave" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <ellipse cx="100" cy="100" rx="94" ry="94" fill="none" stroke="var(--line-strong)" stroke-width="2"/>
+          <g stroke="#1B1B18" stroke-width="1" opacity="0.32">
+            <line x1="20" y1="8" x2="20" y2="192"/><line x1="38" y1="8" x2="38" y2="192"/>
+            <line x1="56" y1="4" x2="56" y2="196"/><line x1="74" y1="2" x2="74" y2="198"/>
+            <line x1="92" y1="1" x2="92" y2="199"/><line x1="110" y1="1" x2="110" y2="199"/>
+            <line x1="128" y1="2" x2="128" y2="198"/><line x1="146" y1="4" x2="146" y2="196"/>
+            <line x1="164" y1="8" x2="164" y2="192"/><line x1="182" y1="20" x2="182" y2="180"/>
+          </g>
+          <g stroke="#1B1B18" stroke-width="1" opacity="0.32">
+            <line x1="8" y1="20" x2="192" y2="20"/><line x1="4" y1="38" x2="196" y2="38"/>
+            <line x1="2" y1="56" x2="198" y2="56"/><line x1="1" y1="74" x2="199" y2="74"/>
+            <line x1="1" y1="92" x2="199" y2="92"/><line x1="1" y1="110" x2="199" y2="110"/>
+            <line x1="1" y1="128" x2="199" y2="128"/><line x1="2" y1="146" x2="198" y2="146"/>
+            <line x1="4" y1="164" x2="196" y2="164"/><line x1="20" y1="182" x2="180" y2="182"/>
+          </g>
+          <line x1="100" y1="1" x2="100" y2="199" stroke="var(--sw-green)" stroke-width="1.4" opacity="0.55"/>
+          <line x1="1" y1="100" x2="199" y2="100" stroke="var(--sw-purple)" stroke-width="1.4" opacity="0.5"/>
+        </svg>
+        <div class="spec-row"><span class="k">Racketgewicht</span><span class="v">300 g</span></div>
+        <div class="spec-row"><span class="k">Balanspunt</span><span class="v">32 cm HL</span></div>
+        <div class="spec-row"><span class="k">Snaarpatroon</span><span class="v">16 × 19</span></div>
+        <div class="spec-row"><span class="k">Spanning geadviseerd</span><span class="v">23–27 kg</span></div>
+        <span class="grip-monogram" title="voor de puristen">R·F</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="start-here">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="section-num">Begin hier</p>
+        <h2>Vier ingangen, één antwoord</h2>
+      </div>
+
+      <div class="guides">
+        <a href="racketwijzer.html" class="guide tool">
+          <span class="gnum">Tool</span>
+          <h3>Racketwijzer</h3>
+          <p>Vul je niveau en speelstijl in, krijg direct een spec-profiel dat past.</p>
+          <span class="go">Start de wijzer</span>
+        </a>
+        <a href="rackets.html" class="guide">
+          <span class="gnum">Gids 01</span>
+          <h3>Rackets kiezen</h3>
+          <p>Gewicht, hoofdgrootte en balanspunt bepalen hoe een racket aanvoelt.</p>
+          <span class="go">Lees de gids</span>
+        </a>
+        <a href="strings.html" class="guide">
+          <span class="gnum">Gids 02</span>
+          <h3>Snaren &amp; materiaal</h3>
+          <p>Polyester, multifilament of gut — elk materiaal ruilt iets in.</p>
+          <span class="go">Lees de gids</span>
+        </a>
+        <a href="tension.html" class="guide">
+          <span class="gnum">Gids 03</span>
+          <h3>Snaarspanning</h3>
+          <p>Hoger is niet beter — het is een andere trade-off.</p>
+          <span class="go">Lees de gids</span>
+        </a>
+        <a href="snaarfinder.html" class="guide tool">
+          <span class="gnum">Tool</span>
+          <h3>Snaarfinder</h3>
+          <p>Vul je speelstijl en voorkeur in, krijg direct het passende snaartype.</p>
+          <span class="go">Start de snaarfinder</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <div class="wrap">
+      <div class="cta-band">
+        <div>
+          <h3>Twijfel je nog tussen twee rackets?</h3>
+          <p>Zet specs naast elkaar en zie in één oogopslag wat het verschil in de praktijk betekent.</p>
+        </div>
+        <a href="racketwijzer.html" class="btn btn-primary">Start vergelijking</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a href="index.html" class="logo" style="font-size:16px;"><svg class="tk-icon" viewBox="0 0 40 40" width="24" height="24" aria-hidden="true">
+  <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.3"/>
+  <line x1="20" y1="3" x2="20" y2="8" stroke="var(--sw-green)" stroke-width="1.8"/>
+  <line x1="20" y1="32" x2="20" y2="37" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+  <line x1="3" y1="20" x2="8" y2="20" stroke="var(--sw-purple)" stroke-width="1.8"/>
+  <line x1="32" y1="20" x2="37" y2="20" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+  <circle cx="20" cy="20" r="10" fill="var(--paper-2)" stroke="currentColor" stroke-width="1.1"/>
+  <path d="M11,14 Q20,20 11,26" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.55"/>
+  <path d="M29,14 Q20,20 29,26" fill="none" stroke="currentColor" stroke-width="0.9" opacity="0.55"/>
+  <text x="20" y="23.5" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="7.5" font-weight="600" fill="var(--accent)" letter-spacing="0.3">TK</text>
+</svg> Tenniskompas</a>
+      <div class="foot-links">
+        <a href="rackets.html">Rackets</a>
+        <a href="strings.html">Snaren</a>
+        <a href="tension.html">Spanning</a>
+        <a href="racketwijzer.html">Racketwijzer</a>
+      </div>
+    </div>
+    <p class="foot-note">Prototype homepage — content en cijfers zijn illustratief, geen productadvies. Beste bekeken met iets fris ernaast — strawberries &amp; cream, bijvoorbeeld. Elegantie is optioneel, sinds '81.</p>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menuBtn');
+  const menuPanel = document.getElementById('menuPanel');
+  menuBtn.addEventListener('click', () => {
+    const isOpen = menuPanel.classList.toggle('open');
+    menuBtn.classList.toggle('open', isOpen);
+    menuBtn.setAttribute('aria-expanded', isOpen);
+  });
+</script>
+
+</body>
+</html>
